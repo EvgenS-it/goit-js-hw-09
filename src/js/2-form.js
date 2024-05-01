@@ -6,18 +6,19 @@ const formData = {
 const form = document.querySelector(".feedback-form");
 const localStorageKey = "feedback-form-state";
 
+const { email, message } = form.elements;
+
 populateFormFields();
 
 form.addEventListener("input", (evt) => {
-  formData.email = form.elements.email.value.trim();
-  formData.message = form.elements.message.value.trim();
+  formData[evt.target.name] = evt.target.value.trim();
   localStorage.setItem(localStorageKey, JSON.stringify(formData));
 });
 
 form.addEventListener("submit", (evt) => {
   evt.preventDefault();
 
-  if (form.elements.email.value === "" || form.elements.message.value === "") {
+  if (email.value.trim() === "" || message.value.trim() === "") {
     alert("Fill please all fields");
     return;
   }
@@ -32,8 +33,8 @@ function populateFormFields() {
 
   if (dataFromLs) {
     const dataFromLsParse = JSON.parse(dataFromLs);
-    form.elements.email.value = dataFromLsParse.email;
-    form.elements.message.value = dataFromLsParse.message;
+    email.value = dataFromLsParse.email;
+    message.value = dataFromLsParse.message;
   }
 
 }
